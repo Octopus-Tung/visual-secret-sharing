@@ -5,12 +5,18 @@ from PIL import Image
 import random
 
 def file_input():
-	global secret, shareA, shareB, width, height
-	secret = Image.open(sys.argv[1]).convert('1')
-	shareA = Image.open(sys.argv[2]).convert('1')
-	shareB = Image.open(sys.argv[3]).convert('1')
-	width = secret.width
-	height = secret.height
+	argc = len(sys.argv)
+	if argc == 4:
+		global secret, shareA, shareB, width, height
+		secret = Image.open(sys.argv[1]).convert('1')
+		shareA = Image.open(sys.argv[2]).convert('1')
+		shareB = Image.open(sys.argv[3]).convert('1')
+		width = secret.width
+		height = secret.height
+		return True
+	else:
+		print 'usage: vss.py <secret> <shareA> <shareB>'
+		return False
 
 def vss():
 	global pixelsA, pixelsB
@@ -81,11 +87,8 @@ def draw(l1, l2, x, y):
 		r = l2[i] % 2
 		pixelsB[x + q, y + r] = 255
 
-def main(argv):
-	file_input()
+if __name__ == "__main__":
+    if file_input() == False:
+		sys.exit()
 	#temp = temp.resize((secret.width/2, secret.height/2), Image.BILINEAR)
 	vss()
-	
-
-if __name__ == "__main__":
-    main(sys.argv)

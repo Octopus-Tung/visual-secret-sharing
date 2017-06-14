@@ -4,10 +4,15 @@ import sys
 from PIL import Image
 
 def img_load():
-	global imgA, imgB, secret
-	imgA = Image.open(sys.argv[1])
-	imgB = Image.open(sys.argv[2])
-	secret = Image.new('1', (imgA.width, imgA.height))
+	if len(sys.argv) == 3:
+		global imgA, imgB, secret
+		imgA = Image.open(sys.argv[1])
+		imgB = Image.open(sys.argv[2])
+		secret = Image.new('1', (imgA.width, imgA.height))
+		return True
+	else:
+		print 'usage: vss.py <shadowA> <shadowB>'
+		return False
 
 def img_cover():
 	A_pixels = imgA.load()
@@ -21,9 +26,7 @@ def img_cover():
 
 	secret.save('secret.bmp')
 
-def main(argv):
-	img_load()
-	img_cover()
-
 if __name__ == "__main__":
-	main(sys.argv)
+	if img_load() == False:
+		sys.exit()
+	img_cover()
